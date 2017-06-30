@@ -299,7 +299,7 @@ inline void load_conf(uint32_t nb) {
   modulation_index[index_Xp] = (byte6 >> 4) & 0x0F;
   modulation_index[index_Ym] = (byte6 >> 0) & 0x0F;
   modulation_index[index_Yp] = (byte7 >> 0) & 0x0F;
-  LFO3_mode = (byte7 >> 4) & 0x0b111;
+  LFO3_mode = (byte7 >> 4) & 0b111;
   modulation_type_all = byte8 + (byte9 << 8) + ((byte10 & 0b01100000) << 11) ;
   GATE_mode = (byte10 >> 3) & 0x03;
   ADSR_mode = (byte10 >> 2) & 0x01;

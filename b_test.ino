@@ -155,7 +155,7 @@ inline void test(){ // hardware test
       PWMC_SetDutyCycle(PWM_INTERFACE, 5, 0);
       PWMC_SetDutyCycle(PWM_INTERFACE, 4, 0);
       PWMC_SetDutyCycle(PWM_INTERFACE, 6, 0);
-      PWMC_SetDutyCycle(PWM_INTERFACE, 7, 0);
+      PWMC_SetDutyCycle(PWM_INTERFACE, 7, 255);
     break;
     case 12: // joystick center 
       if (adc_value16[XY_X] < 0x7000) PWMC_SetDutyCycle(PWM_INTERFACE, 5, 255);
