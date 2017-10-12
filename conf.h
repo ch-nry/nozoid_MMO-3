@@ -54,4 +54,7 @@
 // output GATE on the dedicated pin
 #define gate_out
 
+// MIDI omni mode, or use only a specific chanel (0 to 15)
+#define MIDI_omni 
+//#define MIDI_channel 1
 

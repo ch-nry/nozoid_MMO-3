@@ -63,7 +63,13 @@ inline void MIDI_in() { // the main loop is faster than midi message, no need to
       case 1:
         MIDI_state = 2;
         MIDI_data1 = midi_data;
-        if ((MIDI_status & 0xF0) == 0b11000000) { // progam change
+        #ifdef MIDI_omni
+        if ((MIDI_status & 0xF0) == 0b11000000)  // progam change OMNI
+        #endif
+        #ifndef MIDI_omni        
+        if ((MIDI_status) == 0b11000000 + MIDI_channel)  // progam change
+        #endif
+        {
           MIDI_state = 1;
           if ( (midi_data < 10) && (flash_lock_bit == 0) && (efc_perform_command_is_ready(EFC1)) ) {
           //if (midi_data < 10) {
@@ -76,29 +82,50 @@ inline void MIDI_in() { // the main loop is faster than midi message, no need to
         MIDI_state = 1; // go back waiting for data 1 (running status)
 
         // we have a full midi message
-        //if(((MIDI_status & 0xF0) == 0x90) && (MIDI_data2 != 0) ) { // note on
-          if(((MIDI_status) == 0x90) && (MIDI_data2 != 0) ) { // note on
+        #ifdef MIDI_omni
+        if(((MIDI_status & 0xF0) == 0x90) && (MIDI_data2 != 0) ) // note on, OMNI
+        #endif
+        #ifndef MIDI_omni
+        if(((MIDI_status) == 0x90 + MIDI_channel) && (MIDI_data2 != 0) ) // note on, specific midi chanel
+        #endif        
+        {  
           MIDI_gate = 1;
           MIDI_pitch = MIDI_data1;
           
           KEY_LOCAL_goal = (16+MIDI_pitch) << (2+18);
         }
-        //else if((((MIDI_status & 0xF0) == 0x90) && (MIDI_data2 == 0)) || ((MIDI_status & 0xF0) == 0x80)) { // note off
-        else if((((MIDI_status) == 0x90) && (MIDI_data2 == 0)) || ((MIDI_status & 0xF0) == 0x80)) { // note off
+        #ifdef MIDI_omni
+        else if((((MIDI_status & 0xF0) == 0x90) && (MIDI_data2 == 0)) || ((MIDI_status & 0xF0) == 0x80))  // note off
+        #endif
+        #ifndef MIDI_omni        
+        else if((((MIDI_status) == 0x90 + MIDI_channel) && (MIDI_data2 == 0)) || ((MIDI_status) == 0x80  + MIDI_channel))  // note off
+        #endif
+        {
           if (MIDI_pitch == MIDI_data1){
             MIDI_gate = 0;
           }
         }
         #ifndef EXT_ANA
+        #ifdef MIDI_omni
         else if ((MIDI_status & 0xF0) == 0b11100000) 
-        //else if ((MIDI_status) == 0b11100000) // cannal 0
+        #endif
+        #ifndef MIDI_omni   
+        else if ((MIDI_status) == 0b11100000 + MIDI_channel) // cannal 0
+        #endif
         { // Pitch bend
           MIDI_PITCHWHEEL = (MIDI_data1 << 2) + (MIDI_data2 << 9); // 16 bits
           use_midi_pitchwheel = 1;
         }
         #endif
-        else if ((MIDI_status & 0xF0) == 0b10110000) { // CC
-        //else if ((MIDI_status) == 0b10110001) { // CC cannal 1
+        
+        
+        #ifdef MIDI_omni
+        else if ((MIDI_status & 0xF0) == 0b10110000)  // CC omni
+        #endif
+        #ifndef MIDI_omni       
+        else if ((MIDI_status) == 0b10110000 + MIDI_channel)  // CC cannal n
+        #endif        
+        {
           if (MIDI_data1 < 32) { // bit poids fort
             if (MIDI_data1 < 30) {
               MIDI_fader[MIDI_data1] = (MIDI_data2<<9) + MIDI_fader_LSB[MIDI_data1];
