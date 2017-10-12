@@ -188,26 +188,26 @@ inline void load_conf0(uint32_t nb) { // mandatory to keep the arg, otherwise op
   byte9  = read( adresse+0x800 );
   byte10 = read( adresse+0x900 );
 
-  modulation_index[index_VCO1_MOD1] = (byte1 >> 4) & 0x0F;
-  modulation_index[index_VCO1_MOD2] = (byte1 >> 0) & 0x0F;
-  modulation_index[index_VCO1_MOD3] = (byte2 >> 4) & 0x0F;
-  modulation_index[index_VCO2_MOD1] = (byte2 >> 0) & 0x0F;
-  modulation_index[index_VCO2_MOD2] = (byte3 >> 4) & 0x0F;
-  modulation_index[index_VCO2_MOD3] = (byte3 >> 0) & 0x0F;
-  modulation_index[index_VCO3_MOD1] = (byte4 >> 4) & 0x0F;
-  modulation_index[index_VCO3_MOD2] = (byte4 >> 0) & 0x0F;
-  modulation_index[index_VCO3_MOD3] = (byte5 >> 4) & 0x0F;
-  modulation_index[index_Xm] = (byte5 >> 0) & 0x0F;
-  modulation_index[index_Xp] = (byte6 >> 4) & 0x0F;
-  modulation_index[index_Ym] = (byte6 >> 0) & 0x0F;
-  modulation_index[index_Yp] = (byte7 >> 0) & 0x0F;
-  LFO3_mode = (byte7 >> 4) & 0x0F;
+  modulation_index[index_VCO1_MOD1] = min(12,((byte1 >> 4) & 0x0F));
+  modulation_index[index_VCO1_MOD2] = min(12,((byte1 >> 0) & 0x0F));
+  modulation_index[index_VCO1_MOD3] = min(12,((byte2 >> 4) & 0x0F));
+  modulation_index[index_VCO2_MOD1] = min(12,((byte2 >> 0) & 0x0F));
+  modulation_index[index_VCO2_MOD2] = min(12,((byte3 >> 4) & 0x0F));
+  modulation_index[index_VCO2_MOD3] = min(12,((byte3 >> 0) & 0x0F));
+  modulation_index[index_VCO3_MOD1] = min(12,((byte4 >> 4) & 0x0F));
+  modulation_index[index_VCO3_MOD2] = min(12,((byte4 >> 0) & 0x0F));
+  modulation_index[index_VCO3_MOD3] = min(12,((byte5 >> 4) & 0x0F));
+  modulation_index[index_Xm] = min(12,((byte5 >> 0) & 0x0F));
+  modulation_index[index_Xp] = min(12,((byte6 >> 4) & 0x0F));
+  modulation_index[index_Ym] = min(12,((byte6 >> 0) & 0x0F));
+  modulation_index[index_Yp] = min(12,((byte7 >> 0) & 0x0F));
+  LFO3_mode = min(4,(byte7 >> 4) & 0x0F);
 
   modulation_type_all = byte8 + (byte9 << 8) + ((byte10 & 0b01100000) << 11) ;
     
   GATE_mode = (byte10 >> 3) & 0x03;
   ADSR_mode = (byte10 >> 2) & 0x01;
-  audio_out_mode = (byte10 >> 0) & 0x03;
+  audio_out_mode = min(2,(byte10 >> 0) & 0x03);
   
   flash_lock_bit = 1; // To save this conf as conf 0
 } 
@@ -286,25 +286,25 @@ inline void load_conf(uint32_t nb) {
   byte9  = read( adresse+8 );
   byte10 = read( adresse+9 );
 
-  modulation_index[index_VCO1_MOD1] = (byte1 >> 4) & 0x0F;
-  modulation_index[index_VCO1_MOD2] = (byte1 >> 0) & 0x0F;
-  modulation_index[index_VCO1_MOD3] = (byte2 >> 4) & 0x0F;
-  modulation_index[index_VCO2_MOD1] = (byte2 >> 0) & 0x0F;
-  modulation_index[index_VCO2_MOD2] = (byte3 >> 4) & 0x0F;
-  modulation_index[index_VCO2_MOD3] = (byte3 >> 0) & 0x0F;
-  modulation_index[index_VCO3_MOD1] = (byte4 >> 4) & 0x0F;
-  modulation_index[index_VCO3_MOD2] = (byte4 >> 0) & 0x0F;
-  modulation_index[index_VCO3_MOD3] = (byte5 >> 4) & 0x0F;
-  modulation_index[index_Xm] = (byte5 >> 0) & 0x0F;
-  modulation_index[index_Xp] = (byte6 >> 4) & 0x0F;
-  modulation_index[index_Ym] = (byte6 >> 0) & 0x0F;
-  modulation_index[index_Yp] = (byte7 >> 0) & 0x0F;
-  LFO3_mode = (byte7 >> 4) & 0b111;
+  modulation_index[index_VCO1_MOD1] = min(12,((byte1 >> 4) & 0x0F));
+  modulation_index[index_VCO1_MOD2] = min(12,((byte1 >> 0) & 0x0F));
+  modulation_index[index_VCO1_MOD3] = min(12,((byte2 >> 4) & 0x0F));
+  modulation_index[index_VCO2_MOD1] = min(12,((byte2 >> 0) & 0x0F));
+  modulation_index[index_VCO2_MOD2] = min(12,((byte3 >> 4) & 0x0F));
+  modulation_index[index_VCO2_MOD3] = min(12,((byte3 >> 0) & 0x0F));
+  modulation_index[index_VCO3_MOD1] = min(12,((byte4 >> 4) & 0x0F));
+  modulation_index[index_VCO3_MOD2] = min(12,((byte4 >> 0) & 0x0F));
+  modulation_index[index_VCO3_MOD3] = min(12,((byte5 >> 4) & 0x0F));
+  modulation_index[index_Xm] = min(12,((byte5 >> 0) & 0x0F));
+  modulation_index[index_Xp] = min(12,((byte6 >> 4) & 0x0F));
+  modulation_index[index_Ym] = min(12,((byte6 >> 0) & 0x0F));
+  modulation_index[index_Yp] = min(12,((byte7 >> 0) & 0x0F));
+  LFO3_mode = min(4,(byte7 >> 4) & 0x0F);
   modulation_type_all = byte8 + (byte9 << 8) + ((byte10 & 0b01100000) << 11) ;
   GATE_mode = (byte10 >> 3) & 0x03;
   ADSR_mode = (byte10 >> 2) & 0x01;
-  audio_out_mode = (byte10 >> 0) & 0x03;
- 
+  audio_out_mode = min(2,(byte10 >> 0) & 0x03);
+  
   flash_lock_bit = 1; // To save this conf as conf 0
 }
 

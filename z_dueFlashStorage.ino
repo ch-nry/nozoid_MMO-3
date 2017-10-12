@@ -75,6 +75,7 @@ inline void DueFlashStorage() {
 }
 
 inline byte read(uint32_t address) {
+  //return(0xFFFFFFFF); // testing reading error
   return FLASH_START[address];
 }
 
